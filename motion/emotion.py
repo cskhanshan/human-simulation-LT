@@ -1,7 +1,7 @@
 import cv2
 from deepface import DeepFace
 
-# webcam sy video lega yaha sy
+# webcam sy video lega yaha say
 cap = cv2.VideoCapture(0)
 
 # agr koi emotion pehle se hai to usko track karne ke liye

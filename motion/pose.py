@@ -26,12 +26,12 @@ for file in os.listdir(input_folder):
     image = cv2.imread(image_path)
 
     if image is None:
-        print(f"❌ Couldn't load: {file}")
+        print(f"Couldn't load: {file}")
         continue
 
     h, w = image.shape[:2]
     results = yolo_model(image)[0]
-    print(f"🧠 YOLO detected {len(results.boxes)} objects in {file}")
+    print(f"YOLO detected {len(results.boxes)} objects in {file}")
     person_boxes = []
 
     for r in results.boxes:
@@ -48,7 +48,7 @@ for file in os.listdir(input_folder):
             person_boxes.append((x1, y1, x2, y2))
 
     if not person_boxes:
-        print(f"⚠️ YOLO missed person in {file} — trying full image for pose")
+        print(f"YOLO missed person in {file} — trying full image for pose")
         rgb_full = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         result = pose_model.process(rgb_full)
 
@@ -61,7 +61,7 @@ for file in os.listdir(input_folder):
                 mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2)
             )
         else:
-            print(f"❌ No pose in full image of {file}")
+            print(f" No pose in full image of {file}")
             continue
     else:
         for idx, (x1, y1, x2, y2) in enumerate(person_boxes):
@@ -79,12 +79,12 @@ for file in os.listdir(input_folder):
                 )
                 image[y1:y2, x1:x2] = crop
             else:
-                print(f"⚠️ No pose on cropped person {idx+1} in {file}")
+                print(f"No pose on cropped person {idx+1} in {file}")
 
     # Save & show
     save_path = os.path.join(output_folder, f"pose_{file}")
     cv2.imwrite(save_path, image)
-    print(f"✅ Saved: {save_path}")
+    print(f"Saved: {save_path}")
 
     # Resize if large
     if image.shape[1] > 1000:
